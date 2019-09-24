@@ -10,25 +10,33 @@ const timeString = `${dateFromServer.getHours()}:${dateFromServer
 
 const timeDisplay = document.createElement("p");
 timeDisplay.textContent = timeString;
-timeDisplay.classList.add("time");
+timeDisplay.classList.add("time", "hidden");
+setTimeout(function() {
+  timeDisplay.classList.remove("hidden");
+}, 200);
 
 root.appendChild(timeDisplay);
+
 var happened = false;
+var celebrationNode;
 listenForTime();
 function listenForTime() {
   const now = new Date();
   if (happened) {
     happened = false;
-    const el = document.createElement("p");
-    el.textContent = "no mas";
-    root.appendChild(el);
+    celebrationNode && celebrationNode.remove();
   } else if (hoursAndMinutesEqual(now, dateFromServer)) {
-    const el = document.createElement("p");
-    el.textContent = "it's happening!!!";
-    root.appendChild(el);
     happened = true;
+    celebrationNode = celebration();
   }
   setTimeout(listenForTime, calculateUpdateInterval(now));
+}
+
+function celebration() {
+  const el = document.createElement("p");
+  el.textContent = "it's happening!!!";
+  root.appendChild(el);
+  return el;
 }
 
 function calculateUpdateInterval(date) {
