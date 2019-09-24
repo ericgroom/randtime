@@ -14,11 +14,12 @@ main {
   margin: 0;
   padding: 0;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-weight: bold;
 }
 
 .time {
   font-size: 5rem;
+  font-weight: bold;
 }
