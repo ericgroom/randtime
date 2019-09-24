@@ -4,12 +4,13 @@ extern crate rand;
 use chrono::prelude::*;
 use rand::prelude::*;
 use std::env;
+use std::fs;
 use std::fs::File;
 use std::io::prelude::*;
 use std::io::BufReader;
-use std::path;
+use std::path::Path;
 
-pub fn make_random_time() -> DateTime<Utc> {
+fn make_random_time() -> DateTime<Utc> {
     let utc = Utc::now();
 
     let mut rng = thread_rng();
@@ -19,13 +20,13 @@ pub fn make_random_time() -> DateTime<Utc> {
         .and_hms(hour, minute, 0)
 }
 
-pub fn parse_time(time: &str) -> Result<DateTime<Utc>, chrono::ParseError> {
+fn parse_time(time: &str) -> Result<DateTime<Utc>, chrono::ParseError> {
     time.parse::<DateTime<Utc>>()
 }
 
 pub fn get_random_time() -> DateTime<Utc> {
     let filepath = env::var("TIME_FILE");
-    let file = filepath.as_ref().map(path::Path::new).map(File::open);
+    let file = filepath.as_ref().map(Path::new).map(File::open);
 
     // bleh, cannot find a way to flatten
     match file {
@@ -44,8 +45,8 @@ pub fn get_random_time() -> DateTime<Utc> {
 
 pub fn write_random_time() -> std::io::Result<()> {
     let filepath = env::var("TIME_FILE").unwrap();
-    let path = path::Path::new(&filepath);
+    let path = Path::new(&filepath);
     let time = make_random_time();
     let time_str = format!("{:?}", time);
-    std::fs::write(path, time_str)
+    fs::write(path, time_str)
 }

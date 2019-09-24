@@ -4,5 +4,5 @@ use randtime::timegen::write_random_time;
 
 fn main() {
     dotenv::dotenv().ok();
-    write_random_time();
+    write_random_time().expect("unable to write to file");
 }

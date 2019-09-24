@@ -5,7 +5,6 @@ extern crate rocket;
 extern crate dotenv;
 
 use dotenv::dotenv;
-use std::env;
 
 mod timegen;
 
@@ -17,9 +16,5 @@ fn index() -> &'static str {
 fn main() {
     dotenv().ok();
 
-    for (key, value) in env::vars() {
-        println!("{}: {}", key, value)
-    }
-    println!("{:?}", timegen::get_random_time());
     rocket::ignite().mount("/", routes![index]).launch();
 }
