@@ -1,0 +1,9 @@
+[package]
+name = "randtime"
+version = "0.1.0"
+authors = ["Eric Groom <egroom@mail.sfsu.edu>"]
+edition = "2018"
+
+[dependencies]
+rocket = "0.4.2"
+dotenv = "0.14.1"
