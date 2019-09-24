@@ -3,18 +3,32 @@
 #[macro_use]
 extern crate rocket;
 extern crate dotenv;
+extern crate serde;
 
 use dotenv::dotenv;
+use rocket_contrib::templates::Template;
+use serde::Serialize;
 
 mod timegen;
 
+#[derive(Serialize)]
+struct TemplateContext {
+    time_str: String,
+}
+
 #[get("/")]
-fn index() -> &'static str {
-    "Hello, world!"
+fn index() -> Template {
+    let context = TemplateContext {
+        time_str: format!("{:?}", timegen::get_random_time()),
+    };
+    Template::render("index", context)
 }
 
 fn main() {
     dotenv().ok();
 
-    rocket::ignite().mount("/", routes![index]).launch();
+    rocket::ignite()
+        .attach(Template::fairing())
+        .mount("/", routes![index])
+        .launch();
 }
