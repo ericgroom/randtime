@@ -6,6 +6,7 @@ extern crate dotenv;
 extern crate serde;
 
 use dotenv::dotenv;
+use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::Template;
 use serde::Serialize;
 
@@ -30,5 +31,6 @@ fn main() {
     rocket::ignite()
         .attach(Template::fairing())
         .mount("/", routes![index])
+        .mount("/public", StaticFiles::from("./static"))
         .launch();
 }
