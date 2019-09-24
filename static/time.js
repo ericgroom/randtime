@@ -13,18 +13,16 @@ timeDisplay.textContent = timeString;
 timeDisplay.classList.add("time");
 
 root.appendChild(timeDisplay);
-listenForTime();
 var happened = false;
+listenForTime();
 function listenForTime() {
   const now = new Date();
-  console.log("bloop");
   if (happened) {
     happened = false;
     const el = document.createElement("p");
     el.textContent = "no mas";
     root.appendChild(el);
-  }
-  if (hoursAndMinutesEqual(now, dateFromServer)) {
+  } else if (hoursAndMinutesEqual(now, dateFromServer)) {
     const el = document.createElement("p");
     el.textContent = "it's happening!!!";
     root.appendChild(el);
@@ -36,7 +34,6 @@ function listenForTime() {
 function calculateUpdateInterval(date) {
   const secondsDelta = 59 - date.getSeconds();
   const next = secondsDelta > 0 ? secondsDelta + 1 : 60;
-  console.log(`seconds: ${date.getSeconds()}, secondsDelta: ${secondsDelta}`);
   return next * 1000;
 }
 
