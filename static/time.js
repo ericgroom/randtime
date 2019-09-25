@@ -20,6 +20,7 @@ root.appendChild(timeDisplay);
 var happened = false;
 var celebrationNode;
 listenForTime();
+celebration();
 function listenForTime() {
   const now = new Date();
   if (happened) {
@@ -29,12 +30,14 @@ function listenForTime() {
     happened = true;
     celebrationNode = celebration();
   }
+  timeDisplay.classList.toggle("shake", approaching(now, dateFromServer));
   setTimeout(listenForTime, calculateUpdateInterval(now));
 }
 
 function celebration() {
-  const el = document.createElement("p");
-  el.textContent = "it's happening!!!";
+  const el = document.createElement("canvas");
+  el.classList.add("canvas");
+  const context = el.getContext("2d");
   root.appendChild(el);
   return el;
 }
@@ -47,6 +50,10 @@ function calculateUpdateInterval(date) {
 
 function hoursAndMinutesEqual(a, b) {
   return hours12(a) === hours12(b) && a.getMinutes() === b.getMinutes();
+}
+
+function approaching(a, b) {
+  return hours12(a) == hours12(b) && b.getMinutes() - a.getMinutes() === 1;
 }
 
 function hours12(date) {
