@@ -23,6 +23,10 @@ listenForTime([
     elementFactory: celebration
   },
   {
+    predicate: date => approaching(date, dateFromServer),
+    elementFactory: () => shaker(timeDisplay)
+  },
+  {
     predicate: isPiTime,
     elementFactory: makeTextDisplay.bind(this, "\u03C0 is cool too")
   }
@@ -41,7 +45,6 @@ function listenForTime(matchers) {
         matcher.rendered = null;
       }
     }
-    timeDisplay.classList.toggle("shake", approaching(now, dateFromServer));
     setTimeout(loop, calculateUpdateInterval(now));
   }
   loop();
@@ -52,6 +55,11 @@ function celebration() {
   el.innerText = "Woah!!!! That's right now!";
   root.appendChild(el);
   return el;
+}
+
+function shaker(el) {
+  el.classList.add("shake");
+  return { remove: () => el.classList.remove("shake") };
 }
 
 function makeTextDisplay(text) {
