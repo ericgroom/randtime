@@ -17,27 +17,46 @@ setTimeout(function() {
 
 root.appendChild(timeDisplay);
 
-var happened = false;
-var celebrationNode;
-listenForTime();
-celebration();
-function listenForTime() {
-  const now = new Date();
-  if (happened) {
-    happened = false;
-    celebrationNode && celebrationNode.remove();
-  } else if (hoursAndMinutesEqual(now, dateFromServer)) {
-    happened = true;
-    celebrationNode = celebration();
+listenForTime([
+  {
+    predicate: date => hoursAndMinutesEqual(date, dateFromServer),
+    elementFactory: celebration
+  },
+  {
+    predicate: isPiTime,
+    elementFactory: makeTextDisplay.bind(this, "\u03C0 is cool too")
   }
-  timeDisplay.classList.toggle("shake", approaching(now, dateFromServer));
-  setTimeout(listenForTime, calculateUpdateInterval(now));
+]);
+
+function listenForTime(matchers) {
+  var previousMatchers = matchers;
+  function loop() {
+    let now = new Date();
+
+    for (let matcher of previousMatchers) {
+      if (!matcher.rendered && matcher.predicate(now)) {
+        matcher.rendered = matcher.elementFactory();
+      } else if (matcher.rendered && !matcher.predicate(now)) {
+        matcher.rendered.remove();
+        matcher.rendered = null;
+      }
+    }
+    timeDisplay.classList.toggle("shake", approaching(now, dateFromServer));
+    setTimeout(loop, calculateUpdateInterval(now));
+  }
+  loop();
 }
 
 function celebration() {
-  const el = document.createElement("canvas");
-  el.classList.add("canvas");
-  const context = el.getContext("2d");
+  const el = document.createElement("p");
+  el.innerText = "Woah!!!! That's right now!";
+  root.appendChild(el);
+  return el;
+}
+
+function makeTextDisplay(text) {
+  const el = document.createElement("p");
+  el.innerText = text;
   root.appendChild(el);
   return el;
 }
@@ -59,4 +78,8 @@ function approaching(a, b) {
 function hours12(date) {
   const hours = date.getHours() % 12;
   return hours ? hours : 12;
+}
+
+function isPiTime(date) {
+  return hours12(date) === 3 && date.getMinutes() === 14;
 }

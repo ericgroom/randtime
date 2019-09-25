@@ -12,7 +12,9 @@
     <title>RandTime</title>
   </head>
   <body>
-    <main id="root"></main>
+    <main>
+      <div id="root"></div>
+    </main>
     <input hidden="true" value="{{time_str}}" id="time-input" />
     <script src="public/time.js"></script>
   </body>
