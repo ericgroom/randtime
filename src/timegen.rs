@@ -17,8 +17,9 @@ fn make_random_time() -> DateTime<Utc> {
     let mut rng = thread_rng();
     let hour: u32 = rng.gen_range(0, 24);
     let minute: u32 = rng.gen_range(0, 24);
+
     Utc.ymd(utc.year(), utc.month(), utc.day())
-        .and_hms(hour, minute, 0)
+        .and_hms(utc.hour() + hour, utc.minute() + minute, 0)
 }
 
 fn parse_time(time: &str) -> Result<DateTime<Utc>, chrono::ParseError> {
