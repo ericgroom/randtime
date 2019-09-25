@@ -3,7 +3,7 @@ const timeInput = document.getElementById("time-input");
 
 const timestamp = Date.parse(timeInput.value);
 const dateFromServer = new Date(timestamp);
-const timeString = `${dateFromServer.getHours()}:${dateFromServer
+const timeString = `${hours12(dateFromServer)}:${dateFromServer
   .getMinutes()
   .toString()
   .padStart(2, "0")}`;
@@ -46,5 +46,10 @@ function calculateUpdateInterval(date) {
 }
 
 function hoursAndMinutesEqual(a, b) {
-  return a.getHours() === b.getHours() && a.getMinutes() === b.getMinutes();
+  return hours12(a) === hours12(b) && a.getMinutes() === b.getMinutes();
+}
+
+function hours12(date) {
+  const hours = date.getHours() % 12;
+  return hours ? hours : 12;
 }
