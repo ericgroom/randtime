@@ -20,7 +20,7 @@ root.appendChild(timeDisplay);
 listenForTime([
   {
     predicate: date => hoursAndMinutesEqual(date, dateFromServer),
-    elementFactory: celebration
+    elementFactory: celebrationText
   },
   {
     predicate: date => approaching(date, dateFromServer),
@@ -50,9 +50,9 @@ function listenForTime(matchers) {
   loop();
 }
 
-function celebration() {
+function celebrationText() {
   const el = document.createElement("p");
-  el.innerText = "Woah!!!! That's right now!";
+  el.innerText = "Woah!!!! That's right now!\nMake a wish!";
   root.appendChild(el);
   return el;
 }
