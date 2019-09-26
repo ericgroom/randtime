@@ -5,8 +5,9 @@ COPY . .
 RUN cargo build --release
 RUN ls ./target
 
-FROM alpine:latest
+FROM scratch
 COPY --from=build /app/target/x86_64-unknown-linux-musl/release/randtime /
-COPY --from=build /app/target/x86_64-unknown-linux-musl/release/writetime /
-COPY --from=build /app /
+COPY --from=build /app/static /static
+COPY --from=build /app/templates /templates
+COPY --from=build /app/.env /.env
 CMD ["./randtime"]

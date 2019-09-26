@@ -3,7 +3,6 @@ name = "randtime"
 version = "0.1.0"
 authors = ["Eric Groom <egroom@mail.sfsu.edu>"]
 edition = "2018"
-default-run = "randtime"
 
 [dependencies]
 rocket = "0.4.2"
