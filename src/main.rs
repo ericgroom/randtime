@@ -10,7 +10,7 @@ use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::Template;
 use serde::Serialize;
 
-mod timegen;
+mod time_service;
 
 #[derive(Serialize)]
 struct TemplateContext {
@@ -20,7 +20,7 @@ struct TemplateContext {
 #[get("/")]
 fn index() -> Template {
     let context = TemplateContext {
-        time_str: format!("{:?}", timegen::get_random_time()),
+        time_str: format!("{:?}", time_service::get_random_time()),
     };
     Template::render("index", context)
 }
