@@ -3,9 +3,10 @@ extern crate rand;
 
 use chrono::prelude::*;
 use rand::prelude::*;
+use serde::Serialize;
 use std::fmt::Debug;
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct TimeInfo {
     pub random_time: DateTime<Utc>,
     pub next_generation_time: DateTime<Utc>,

@@ -1,12 +1,12 @@
-use chrono::{DateTime, Utc};
+use chrono::Utc;
 
 mod time_gen;
 mod time_storage;
 
-use time_gen::TimeInfo;
+pub use time_gen::TimeInfo;
 use time_storage::{read_time_info, write_time_info};
 
-pub fn get_random_time() -> DateTime<Utc> {
+pub fn get_random_time() -> TimeInfo {
     let time_info = match read_time_info() {
         Ok(time_info) => time_info,
         Err(e) => {
@@ -14,10 +14,10 @@ pub fn get_random_time() -> DateTime<Utc> {
             generate_and_persist_time_info()
         }
     };
-    if Utc::now() > time_info.next_generation_time {
-        generate_and_persist_time_info().random_time
+    if Utc::now() >= time_info.next_generation_time {
+        generate_and_persist_time_info()
     } else {
-        time_info.random_time
+        time_info
     }
 }
 
