@@ -20,10 +20,10 @@ impl TimeInfo {
         }
     }
     pub fn default_next_time() -> DateTime<Utc> {
-        let now = Utc::now();
+        let pacific_offset = 8;
+        let today_at_midnight = Utc::today().and_hms(pacific_offset, 0, 0);
 
-        // ensures that this is never before the generated random time
-        add_to_date(&now, 12, 1)
+        add_to_date(&today_at_midnight, 24, 0)
     }
 }
 
