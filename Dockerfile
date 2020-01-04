@@ -1,4 +1,4 @@
-FROM clux/muslrust:nightly as build
+FROM clux/muslrust:stable as build
 
 WORKDIR /app
 COPY . .
