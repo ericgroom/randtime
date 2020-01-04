@@ -43,11 +43,12 @@ impl Responder for TimeInfo {
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
 
-    // logging
+    env_logger::init();
     HttpServer::new(|| {
         let tera = Tera::new("templates/**/*").unwrap();
 
         App::new()
+            .wrap(actix_web::middleware::Logger::default())
             .data(tera)
             .service(actix_files::Files::new("/public", "./static"))
             .route("/", web::get().to(index))
